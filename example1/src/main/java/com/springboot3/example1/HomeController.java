@@ -1,15 +1,22 @@
 package com.springboot3.example1;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.lang.classfile.instruction.ReturnInstruction;
 
 @Controller
 public class HomeController {
 
+    private VideoService videoService;
+
+    public HomeController(VideoService videoService) {
+        this.videoService = videoService;
+    }
+
+
     @GetMapping("/")
-    public String index(){
+    public String index(Model model) {
+        model.addAttribute("videos", videoService.getVideos());
         return "index";
     }
 }
