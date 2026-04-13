@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### Node.js ###
+node_modules/
+package-lock.json
+.parcel-cache/
+dist/
+.npm
+*.log
+npm-debug.log*
