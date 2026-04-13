@@ -27,4 +27,10 @@ public class HomeController {
         videoService.create(newVideo);
         return "redirect:/";
     }
+
+    @GetMapping("/react")
+    public String testing() {
+        System.out.println("SOMEONE IS CALLING ME");
+        return "react";
+    }
 }
