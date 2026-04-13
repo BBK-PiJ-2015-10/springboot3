@@ -41,3 +41,4 @@ dist/
 .npm
 *.log
 npm-debug.log*
+node/
