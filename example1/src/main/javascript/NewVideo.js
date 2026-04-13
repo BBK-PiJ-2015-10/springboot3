@@ -21,7 +21,6 @@ class NewVideo extends React.Component {
             },
             body: JSON.stringify({name: this.state.name})
         }).then(response => {
-            //console.log("WOOF WOOF")
             window.location.href = "/react"
         })
 
