@@ -1,9 +1,10 @@
-package com.springboot3.example1;
+package com.springboot3.example1.controller;
 
+import com.springboot3.example1.dto.Video;
+import com.springboot3.example1.dto.UniversalSearch;
 import com.springboot3.example1.dto.VideoSearch;
 import com.springboot3.example1.entity.VideoEntity;
-import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
-import org.hibernate.dialect.function.ListaggStringAggEmulation;
+import com.springboot3.example1.service.VideoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,4 +51,12 @@ public class HomeController {
         model.addAttribute("videos", searchResult);
         return "index";
     }
+
+    @PostMapping("/universal-search")
+    public String universalSearch(@ModelAttribute UniversalSearch search, Model model) {
+        var foundVideos = videoService.search(search);
+        model.addAttribute("videos", foundVideos);
+        return "index";
+    }
+
 }

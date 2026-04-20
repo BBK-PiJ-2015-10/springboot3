@@ -1,5 +1,7 @@
-package com.springboot3.example1;
+package com.springboot3.example1.controller;
 
+import com.springboot3.example1.dto.Video;
+import com.springboot3.example1.service.VideoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

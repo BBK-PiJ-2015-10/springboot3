@@ -19,4 +19,12 @@ public class VideoEntity {
         this.name = name;
         this.description = description;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

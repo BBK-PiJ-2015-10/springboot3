@@ -1,9 +1,13 @@
-package com.springboot3.example1;
+package com.springboot3.example1.service;
 
+import com.springboot3.example1.dto.Video;
+import com.springboot3.example1.dto.UniversalSearch;
 import com.springboot3.example1.dto.VideoSearch;
 import com.springboot3.example1.entity.VideoEntity;
 import com.springboot3.example1.repo.VideoRepository;
 import jakarta.annotation.PostConstruct;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -26,20 +30,11 @@ public class VideoService {
 
     @PostConstruct
     private void loadVideos() {
-        List<VideoEntity> databaseVideos = List.of(
-                new VideoEntity("cat1", "pet movies"),
-                new VideoEntity("dog1", "pet movies"),
-                new VideoEntity("cat2", "pet movies"),
-                new VideoEntity("superman1", "human movies")
-        );
+        List<VideoEntity> databaseVideos = List.of(new VideoEntity("cat1", "pet movies"), new VideoEntity("dog1", "pet movies"), new VideoEntity("cat2", "pet movies"), new VideoEntity("superman1", "human movies"));
         videoRepository.saveAll(databaseVideos);
     }
 
-    private List<Video> videos = new CopyOnWriteArrayList<>(List.of(
-            new Video("cat1"),
-            new Video("cat2"),
-            new Video("cat3")
-    ));
+    private List<Video> videos = new CopyOnWriteArrayList<>(List.of(new Video("cat1"), new Video("cat2"), new Video("cat3")));
 
     public List<Video> getVideos() {
         return videos;
@@ -63,6 +58,16 @@ public class VideoService {
             return videoRepository.findByDescriptionContainsIgnoreCase(videoSearch.description(), sort);
         }
         return List.of();
+    }
+
+    public List<VideoEntity> search(UniversalSearch search) {
+        VideoEntity probe = new VideoEntity();
+        if (StringUtils.hasText(search.value())) {
+            probe.setName(search.value());
+            probe.setDescription(search.value());
+        }
+        Example<VideoEntity> example = Example.of(probe, ExampleMatcher.matchingAny().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
+        return videoRepository.findAll(example);
     }
 
 }
