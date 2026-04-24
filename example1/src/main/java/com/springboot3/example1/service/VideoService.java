@@ -36,8 +36,8 @@ public class VideoService {
 
     private List<Video> videos = new CopyOnWriteArrayList<>(List.of(new Video("cat1"), new Video("cat2"), new Video("cat3")));
 
-    public List<Video> getVideos() {
-        return videos;
+    public List<VideoEntity> getVideos() {
+        return videoRepository.findAll();
     }
 
     public Video create(Video newVideo) {

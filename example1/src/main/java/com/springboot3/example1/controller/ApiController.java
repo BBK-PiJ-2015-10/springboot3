@@ -1,6 +1,7 @@
 package com.springboot3.example1.controller;
 
 import com.springboot3.example1.dto.Video;
+import com.springboot3.example1.entity.VideoEntity;
 import com.springboot3.example1.service.VideoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class ApiController {
     }
 
     @GetMapping("api/videos")
-    public List<Video> all() {
+    public List<VideoEntity> all() {
         return videoService.getVideos();
     }
 
