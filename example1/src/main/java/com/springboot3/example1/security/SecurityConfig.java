@@ -14,31 +14,30 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.logging.Logger;
+
 @Configuration
 public class SecurityConfig {
 
+    private Logger logger = Logger.getLogger(this.getClass().getName());
+
     @Bean
-    public UserDetailsService userDetailsService() {
-        // return username ->
-        //       userRepository.findByUsername(username).asUser();
-        UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build()
-        );
-        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("password")
-                .roles("ADMIN")
-                .build()
-        );
-        return userDetailsManager;
-//        userDetailsManager
-//                .createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
-//        userDetailsManager
-//                .createUser(User.withDefaultPasswordEncoder().username("admin").password("password").roles("ADMIN").build());
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+         return username -> userRepository.findByUsername(username).asUser();
+//        UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
+//        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
+//                .username("user")
+//                .password("password")
+//                .roles("USER")
+//                .build()
+//        );
+//        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
+//                .username("admin")
+//                .password("password")
+//                .roles("ADMIN")
+//                .build()
+//        );
+//        logger.info("Returning userDetailsManager");
 //        return userDetailsManager;
     }
 
@@ -67,8 +66,12 @@ public class SecurityConfig {
     @Bean
     CommandLineRunner initUsers(UserManagementRepository userManagementRepository) {
         return args -> {
-            userManagementRepository.save(new UserAccount("user", "password","USER"));
-            userManagementRepository.save(new UserAccount("admin", "password","ADMIN"));
+            if (userManagementRepository.count() == 0 ){
+                userManagementRepository.save(new UserAccount("user", "password","USER"));
+                logger.info("Saved user");
+                userManagementRepository.save(new UserAccount("admin", "password","ADMIN"));
+                logger.info("Saved admin");
+            }
         };
     }
 
