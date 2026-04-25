@@ -3,8 +3,8 @@ package com.springboot3.example1.security;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.security.core.userdetails.User;
-//import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 //
 import java.util.ArrayList;
@@ -42,13 +42,13 @@ public class UserAccount {
 
     public UserAccount() {
     }
-//
-//    public UserDetails asUser() {
-//        return User.withDefaultPasswordEncoder()
-//                .username(username)
-//                .password(password)
-//                .authorities(authorities)
-//                .build();
-//    }
+
+    public UserDetails asUser() {
+        return User.withDefaultPasswordEncoder()
+                .username(username)
+                .password(password)
+                .authorities(authorities)
+                .build();
+    }
 
 }
