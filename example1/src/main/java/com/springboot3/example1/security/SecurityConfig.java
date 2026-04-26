@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 //import org.springframework.security.core.userdetails.User;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.User;
@@ -26,26 +28,47 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return username -> userRepository.findByUsername(username).asUser();
-//        UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-//        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("password")
-//                .roles("USER")
-//                .build()
-//        );
-//        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("password")
-//                .roles("ADMIN")
-//                .build()
-//        );
-//        logger.info("Returning userDetailsManager");
-//        return userDetailsManager;
+       // return username -> userRepository.findByUsername(username).asUser();
+        UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
+        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
+                .username("user")
+                .password("password")
+                .roles("USER")
+                .build()
+        );
+        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
+                .username("admin")
+                .password("password")
+                .roles("ADMIN")
+                .build()
+        );
+        logger.info("Returning userDetailsManager");
+        return userDetailsManager;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .authorizeHttpRequests(auth ->
+                                auth.requestMatchers("/login").permitAll()
+                                        //.anyRequest().authenticated()
+                                        //.requestMatchers("/", "/search").authenticated()
+                                        //.requestMatchers(HttpMethod.GET, "/api/**").authenticated()
+                                        //.requestMatchers(HttpMethod.POST, "/new-video", "/api/**").hasRole("ADMIN")
+                                        .anyRequest().authenticated()
+                        //.anyRequest().denyAll()
+                )
+                .formLogin(form -> form.defaultSuccessUrl("/", true).permitAll())
+                //.httpBasic(Customizer.withDefaults())
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**")  // Disable CSRF for H2 console
+                )
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)  // Allow iframes from same origin
+                )
+                .build();
+    }
+
 //        http
 //                .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/h2-console/**").permitAll()  // Allow H2 console
@@ -61,17 +84,17 @@ public class SecurityConfig {
 //                .headers(headers -> headers
 //                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)  // Allow iframes from same origin
 //                );
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/h2-console/**").permitAll()
-                .anyRequest().authenticated()
-        );
-        http.formLogin(form -> form.defaultSuccessUrl("/", true).permitAll());
-        //http.httpBasic();
-        http.csrf(csfr -> csfr.ignoringRequestMatchers("/h2-console/**"));
-        http.headers(headers -> headers
-                .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
-        return http.build();
-    }
+//        http.authorizeHttpRequests(auth -> auth
+//                .requestMatchers("/h2-console/**").permitAll()
+//                .anyRequest().authenticated()
+//        );
+//        http.formLogin(form -> form.defaultSuccessUrl("/", true).permitAll());
+//        //http.httpBasic();
+//        http.csrf(csfr -> csfr.ignoringRequestMatchers("/h2-console/**"));
+//        http.headers(headers -> headers
+//                .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+//        return http.build();
+
 
     //
     @Bean
