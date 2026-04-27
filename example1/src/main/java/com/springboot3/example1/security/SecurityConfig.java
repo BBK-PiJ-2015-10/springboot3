@@ -51,11 +51,12 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth ->
                                 auth.requestMatchers("/login").permitAll()
-                                        //.anyRequest().authenticated()
-                                        //.requestMatchers("/", "/search").authenticated()
+                                        .requestMatchers("/").authenticated()
+                                        .requestMatchers(HttpMethod.POST, "/multi-field-search").authenticated()
+                                        .requestMatchers(HttpMethod.POST, "/universal-search").authenticated()
                                         //.requestMatchers(HttpMethod.GET, "/api/**").authenticated()
-                                        //.requestMatchers(HttpMethod.POST, "/new-video", "/api/**").hasRole("ADMIN")
-                                        .anyRequest().authenticated()
+                                        .requestMatchers(HttpMethod.POST, "/new-video", "/api/**").hasRole("ADMIN")
+                                        //.anyRequest().authenticated()
                         //.anyRequest().denyAll()
                 )
                 .formLogin(form -> form.defaultSuccessUrl("/", true).permitAll())
