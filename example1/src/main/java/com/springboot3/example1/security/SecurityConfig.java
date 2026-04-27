@@ -1,6 +1,5 @@
 package com.springboot3.example1.security;
 
-import jakarta.persistence.criteria.From;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +27,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
-       // return username -> userRepository.findByUsername(username).asUser();
+        // return username -> userRepository.findByUsername(username).asUser();
         UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
         userDetailsManager.createUser(User.withDefaultPasswordEncoder()
                 .username("user")
@@ -50,17 +49,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth ->
-                                auth.requestMatchers("/login").permitAll()
-                                        .requestMatchers("/").authenticated()
-                                        .requestMatchers(HttpMethod.POST, "/multi-field-search").authenticated()
-                                        .requestMatchers(HttpMethod.POST, "/universal-search").authenticated()
-                                        //.requestMatchers(HttpMethod.GET, "/api/**").authenticated()
-                                        .requestMatchers(HttpMethod.POST, "/new-video", "/api/**").hasRole("ADMIN")
-                                        //.anyRequest().authenticated()
-                        //.anyRequest().denyAll()
+                        auth.requestMatchers("/login").permitAll()
+                                .requestMatchers("/").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/multi-field-search").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/universal-search").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/new-video", "/api/**").hasRole("ADMIN")
+                                .requestMatchers("/h2-console/**").authenticated()
+                                //.anyRequest().authenticated()
+                                .anyRequest().denyAll()
                 )
                 .formLogin(form -> form.defaultSuccessUrl("/", true).permitAll())
-                //.httpBasic(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/h2-console/**")  // Disable CSRF for H2 console
                 )
@@ -70,34 +70,6 @@ public class SecurityConfig {
                 .build();
     }
 
-//        http
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/h2-console/**").permitAll()  // Allow H2 console
-//                        .anyRequest().authenticated()
-//                )
-//                .formLogin(form -> form
-//                        .defaultSuccessUrl("/", true)
-//                        .permitAll()
-//                )
-//                .csrf(csrf -> csrf
-//                        .ignoringRequestMatchers("/h2-console/**")  // Disable CSRF for H2 console
-//                )
-//                .headers(headers -> headers
-//                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)  // Allow iframes from same origin
-//                );
-//        http.authorizeHttpRequests(auth -> auth
-//                .requestMatchers("/h2-console/**").permitAll()
-//                .anyRequest().authenticated()
-//        );
-//        http.formLogin(form -> form.defaultSuccessUrl("/", true).permitAll());
-//        //http.httpBasic();
-//        http.csrf(csfr -> csfr.ignoringRequestMatchers("/h2-console/**"));
-//        http.headers(headers -> headers
-//                .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
-//        return http.build();
-
-
-    //
     @Bean
     CommandLineRunner initUsers(UserManagementRepository userManagementRepository) {
         return args -> {
