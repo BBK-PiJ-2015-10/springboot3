@@ -34,14 +34,15 @@ public class VideoService {
         videoRepository.saveAll(databaseVideos);
     }
 
-    private List<Video> videos = new CopyOnWriteArrayList<>(List.of(new Video("cat1"), new Video("cat2"), new Video("cat3")));
+    // private List<Video> videos = new CopyOnWriteArrayList<>(List.of(new Video("cat1"), new Video("cat2"), new Video("cat3")));
 
     public List<VideoEntity> getVideos() {
         return videoRepository.findAll();
     }
 
     public Video create(Video newVideo) {
-        videos.add(newVideo);
+        //videos.add(newVideo);
+        videoRepository.save(new VideoEntity(newVideo.name(), "undeclared"));
         return newVideo;
     }
 
