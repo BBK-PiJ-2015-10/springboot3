@@ -15,8 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.w3c.dom.css.CSSFontFaceRule;
 
 import java.util.logging.Logger;
 
@@ -27,22 +25,22 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
-        // return username -> userRepository.findByUsername(username).asUser();
-        UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build()
-        );
-        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("password")
-                .roles("ADMIN")
-                .build()
-        );
-        logger.info("Returning userDetailsManager");
-        return userDetailsManager;
+        return username -> userRepository.findByUsername(username).asUser();
+//        UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
+//        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
+//                .username("user")
+//                .password("password")
+//                .roles("USER")
+//                .build()
+//        );
+//        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
+//                .username("admin")
+//                .password("password")
+//                .roles("ADMIN")
+//                .build()
+//        );
+//        logger.info("Returning userDetailsManager");
+//        return userDetailsManager;
     }
 
     @Bean
