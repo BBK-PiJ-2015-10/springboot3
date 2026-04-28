@@ -19,13 +19,13 @@ public class ApiController {
         this.videoService = videoService;
     }
 
-    @GetMapping("api/videos")
-    public List<VideoEntity> all() {
-        return videoService.getVideos();
-    }
-
-    @PostMapping("/api/videos")
-    public Video newVideo(@RequestBody Video newVideo) {
-        return videoService.create(newVideo);
-    }
+//    @GetMapping("api/videos")
+//    public List<VideoEntity> all() {
+//        return videoService.getVideos();
+//    }
+//
+//    @PostMapping("/api/videos")
+//    public Video newVideo(@RequestBody Video newVideo) {
+//        return videoService.create(newVideo);
+//    }
 }

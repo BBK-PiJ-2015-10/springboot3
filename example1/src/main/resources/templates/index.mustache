@@ -3,6 +3,10 @@
 <ul>
     {{#videos}}
         <li>{{name}}</li>
+        <form action='/delete/videos/#{{id}}' method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <button type="submit">Delete</button>
+        </form>
     {{/videos}}
 </ul>
 
@@ -27,3 +31,4 @@
     <input type="text" name="value"/>
     <button type="submit">Search</button>
 </form>
+

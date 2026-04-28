@@ -52,6 +52,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/multi-field-search").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/universal-search").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
+                                .requestMatchers(HttpMethod.POST,"/delete/videos/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/new-video", "/api/**").hasRole("ADMIN")
                                 .requestMatchers("/h2-console/**").authenticated()
                                 //.anyRequest().authenticated()
@@ -72,7 +73,9 @@ public class SecurityConfig {
     CommandLineRunner initUsers(UserManagementRepository userManagementRepository) {
         return args -> {
             if (userManagementRepository.count() == 0) {
-                userManagementRepository.save(new UserAccount("user", "password", "USER"));
+                userManagementRepository.save(new UserAccount("alice", "password", "USER"));
+                logger.info("Saved user");
+                userManagementRepository.save(new UserAccount("bob", "password", "USER"));
                 logger.info("Saved user");
                 userManagementRepository.save(new UserAccount("admin", "password", "ADMIN"));
                 logger.info("Saved admin");

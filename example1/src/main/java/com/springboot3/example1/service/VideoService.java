@@ -29,7 +29,7 @@ public class VideoService {
 
     @PostConstruct
     private void loadVideos() {
-        List<VideoEntity> databaseVideos = List.of(new VideoEntity("cat1", "pet movies"), new VideoEntity("dog1", "pet movies"), new VideoEntity("cat2", "pet movies"), new VideoEntity("superman1", "human movies"));
+        List<VideoEntity> databaseVideos = List.of(new VideoEntity("cat1", "pet movies", "alice"), new VideoEntity("dog1", "pet movies", "bob"), new VideoEntity("cat2", "pet movies", "bob"), new VideoEntity("superman1", "human movies", "alice"));
         videoRepository.saveAll(databaseVideos);
     }
 
@@ -37,8 +37,13 @@ public class VideoService {
         return videoRepository.findAll();
     }
 
-    public Video create(Video newVideo) {
-        videoRepository.save(new VideoEntity(newVideo.name(), "undeclared"));
+    public void delete(Long videoId) {
+        videoRepository.deleteById(videoId);
+    }
+
+    public Video create(Video newVideo, String userName) {
+        videoRepository.save(new VideoEntity(newVideo.name(), "undeclared", userName));
+        //videoRepository.saveAndFlush()
         return newVideo;
     }
 
