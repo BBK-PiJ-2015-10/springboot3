@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 //import org.springframework.security.core.userdetails.User;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.User;
@@ -19,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.util.logging.Logger;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
@@ -52,7 +54,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/multi-field-search").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/universal-search").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
-                                .requestMatchers(HttpMethod.POST,"/delete/videos/**").authenticated()
+                                .requestMatchers(HttpMethod.POST,"/delete/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/new-video", "/api/**").hasRole("ADMIN")
                                 .requestMatchers("/h2-console/**").authenticated()
                                 //.anyRequest().authenticated()

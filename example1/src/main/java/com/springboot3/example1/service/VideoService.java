@@ -9,6 +9,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.AbstractAuditable_;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -38,7 +39,8 @@ public class VideoService {
     }
 
     public void delete(Long videoId) {
-        videoRepository.deleteById(videoId);
+        //videoRepository.deleteById(videoId);
+        videoRepository.findById(videoId).ifPresent(videoRepository::delete);
     }
 
     public Video create(Video newVideo, String userName) {
