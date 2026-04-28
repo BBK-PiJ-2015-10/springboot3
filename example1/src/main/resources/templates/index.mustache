@@ -37,3 +37,8 @@
     <li>Username: {{ authentication.name}}</li>
     <li>Authorities: {{ authentication.authorities}}</li>
 </ul>
+
+<form action="/logout" method="post">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <button type="submit">Logout</button>
+</form>
