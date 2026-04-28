@@ -41,6 +41,11 @@ public class VideoService {
     public void delete(Long videoId) {
         //videoRepository.deleteById(videoId);
         videoRepository.findById(videoId).ifPresent(videoRepository::delete);
+//        try {
+//            videoRepository.findById(videoId).ifPresent(videoRepository::delete);
+//        } catch (Exception e) {
+//            logger.info(String.format("Something went off %s", e));
+//        }
     }
 
     public Video create(Video newVideo, String userName) {
