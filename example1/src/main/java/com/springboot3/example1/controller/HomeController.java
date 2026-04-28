@@ -29,8 +29,9 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, Authentication authentication) {
         model.addAttribute("videos", videoService.getVideos());
+        model.addAttribute("authentication", authentication);
         return "index";
     }
 
@@ -43,9 +44,9 @@ public class HomeController {
 
     @PostMapping("/delete/videos/{videoId}")
     public String deleteVideo(@PathVariable Long videoId) {
-        logger.info(String.format("Received request to delete video with id %d",videoId));
+        logger.info(String.format("Received request to delete video with id %d", videoId));
         videoService.delete(videoId);
-        logger.info(String.format("Deleted video with id %d",videoId));
+        logger.info(String.format("Deleted video with id %d", videoId));
         return "redirect:/";
     }
 
