@@ -2,8 +2,6 @@ package com.springboot3.example2.youtube.services;
 
 import com.springboot3.example2.youtube.dtos.SearchListResponse;
 import com.springboot3.example2.youtube.dtos.Sort;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 
